@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Built-By: Angus
+Created-By: Apache Maven
+Build-Jdk: 1.8.0_181
+Extension-Name: progedDB
+Specification-Title: TODO
+Implementation-Title: progedDB
+Implementation-Version: 1.0-SNAPSHOT
+Group-Id: io.jenkins.plugins
+Short-Name: progedDB
+Long-Name: ProgEdu update screenshot url to DB
+Plugin-Version: 1.0-SNAPSHOT (private-07/01/2019 15:02-Angus)
+Hudson-Version: 2.7.3
+Jenkins-Version: 2.7.3
+Plugin-Dependencies: structs:1.7
+Plugin-Developers: 
+

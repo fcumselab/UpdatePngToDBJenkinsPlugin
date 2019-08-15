@@ -1,0 +1,6 @@
+io\jenkins\plugins\progupdatetodb\UpdateToDbPublisher.class
+META-INF\annotations\org.jenkinsci.Symbol
+io\jenkins\plugins\progupdatetodb\UpdateToDbPublisher.stapler
+io\jenkins\plugins\progupdatetodb\UpdateToDbPublisher$DescriptorImpl.class
+META-INF\annotations\hudson.Extension
+io\jenkins\plugins\progupdatetodb\UpdateToDbPublisher$1.class
