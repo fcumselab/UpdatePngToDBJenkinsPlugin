@@ -33,25 +33,31 @@ public class UpdateToDbPublisher extends Recorder {
   private final static String WORKSPACEDIR = JENKINSHOMEDIR + "/workspace/";
   private final static String PNG = ".png";
   private final String progeduAPIUrl;
-  private final String jenkinsJobName;
+  private final String jenkinsUserName;
+  private final String jenkinsAssignmentName;
 
   @DataBoundConstructor
-  public UpdateToDbPublisher(String progeduAPIUrl, String jenkinsJobName) {
+  public UpdateToDbPublisher(String progeduAPIUrl, String jenkinsUserName, String jenkinsAssignmentName) {
     this.progeduAPIUrl = progeduAPIUrl;
-    this.jenkinsJobName = jenkinsJobName;
+    this.jenkinsUserName = jenkinsUserName;
+    this.jenkinsAssignmentName = jenkinsAssignmentName;
   }
 
   public String getProgeduAPIUrl() {
     return progeduAPIUrl;
   }
 
-  public String getJenkinsJobName() {
-    return jenkinsJobName;
+  public String getJenkinsUserName() {
+    return jenkinsUserName;
+  }
+
+  public String getJenkinsAssignmentName() {
+    return jenkinsAssignmentName;
   }
 
   // --step 1--
   private ArrayList searchPngFile(BuildListener listener) {
-    String pngFilePath = WORKSPACEDIR + jenkinsJobName + PNGPATH;
+    String pngFilePath = WORKSPACEDIR + jenkinsUserName + "_" + jenkinsAssignmentName + PNGPATH;
     ArrayList pngFile = new ArrayList<>();
     File pngfileDir = new File(pngFilePath);
     FilenameFilter filter = new FilenameFilter() {
@@ -72,35 +78,14 @@ public class UpdateToDbPublisher extends Recorder {
     }
     return pngFile;
   }
-
-  private int getCommitCount() {
-    int commitCount = 0;
-    String checkurl = progeduAPIUrl + "/commits/screenshot/nextCommitNumber";
-    try {
-      URI uri = new URIBuilder(checkurl).addParameter("jobName", jenkinsJobName).build();
-      HttpURLConnection conn = (HttpURLConnection) uri.toURL().openConnection();
-      conn.setReadTimeout(10000);
-      conn.setConnectTimeout(15000);
-      conn.setRequestMethod("GET");
-      conn.connect();
-
-      BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-      commitCount = Integer.parseInt(br.readLine().toString());
-
-      conn.disconnect();
-      br.close();
-    } catch (IOException | URISyntaxException e) {
-      e.printStackTrace();
-    }
-    return commitCount;
-  }
   // --step 1/--
   
   // --step 2--
   private void saveURLtoDB(List<String> pngFiles, BuildListener listener) {
     String checkurl = progeduAPIUrl + "/commits/screenshot/updateURL";
     try {
-      URIBuilder uriBuilder = new URIBuilder(checkurl).addParameter("proName", jenkinsJobName);
+      URIBuilder uriBuilder = new URIBuilder(checkurl).addParameter("userName", jenkinsUserName);
+      uriBuilder = new URIBuilder(checkurl).addParameter("assignmentName", jenkinsAssignmentName);
       for (String data : pngFiles) {
         uriBuilder.addParameter("url", data);
       }
