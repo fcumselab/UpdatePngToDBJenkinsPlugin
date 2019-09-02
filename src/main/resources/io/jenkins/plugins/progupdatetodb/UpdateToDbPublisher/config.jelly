@@ -3,7 +3,10 @@
     <f:entry title="${%progeduAPIUrl}" field="progeduAPIUrl">
         <f:textbox />
     </f:entry>
-    <f:entry title="${%jenkinsJobName}" field="jenkinsJobName">
+    <f:entry title="${%jenkinsAssignmentName}" field="jenkinsAssignmentName">
+        <f:textbox />
+    </f:entry>
+    <f:entry title="${%jenkinsUserName}" field="jenkinsUserName">
         <f:textbox />
     </f:entry>
 </j:jelly>

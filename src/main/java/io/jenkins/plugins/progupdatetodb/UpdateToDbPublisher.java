@@ -94,23 +94,14 @@ public class UpdateToDbPublisher extends Recorder {
     }
     return commitCount;
   }
-
-  private List<String> getPngUrl(List<String> pngFiles) {
-    List<String> pngUrl = new ArrayList<String>();
-    int commitCount = getCommitCount();
-    for (int i = 0; i < pngFiles.size(); i++) {
-      pngUrl.add("/job/" + jenkinsJobName + "/" + commitCount + "/artifact/target/screenshot/" + pngFiles.get(i) + ".png");
-    }
-    return pngUrl;
-  }
-
   // --step 1/--
+  
   // --step 2--
-  private void saveURLtoDB(List<String> pngurl, BuildListener listener) {
+  private void saveURLtoDB(List<String> pngFiles, BuildListener listener) {
     String checkurl = progeduAPIUrl + "/commits/screenshot/updateURL";
     try {
       URIBuilder uriBuilder = new URIBuilder(checkurl).addParameter("proName", jenkinsJobName);
-      for (String data : pngurl) {
+      for (String data : pngFiles) {
         uriBuilder.addParameter("url", data);
       }
       URI uri = uriBuilder.build();
@@ -149,13 +140,12 @@ public class UpdateToDbPublisher extends Recorder {
   public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
     listener.getLogger()
     .println("-----------------------UpdateScreenshotPNGToDB-----------------------------");
-    // step 1: Search all PNG file under src/test/screenshot/
+    // step 1: Search all PNG file under src/target/screenshot/
     List<String> pngFiles = new ArrayList<>();
     pngFiles = searchPngFile(listener);
-    List<String> pngurl = getPngUrl(pngFiles);
 
     // step 2: save to DB
-    saveURLtoDB(pngurl, listener);
+    saveURLtoDB(pngFiles, listener);
     listener.getLogger()
     .println("-----------------------UpdateScreenshotPNGToDB-----------------------------");
     return true;
