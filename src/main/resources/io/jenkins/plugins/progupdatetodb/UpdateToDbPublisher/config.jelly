@@ -6,7 +6,7 @@
     <f:entry title="${%jenkinsAssignmentName}" field="jenkinsAssignmentName">
         <f:textbox />
     </f:entry>
-    <f:entry title="${%jenkinsUserName}" field="jenkinsUserName">
+    <f:entry title="${%jenkinsUsername}" field="jenkinsUsername">
         <f:textbox />
     </f:entry>
 </j:jelly>

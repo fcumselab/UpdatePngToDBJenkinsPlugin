@@ -33,13 +33,14 @@ public class UpdateToDbPublisher extends Recorder {
   private final static String WORKSPACEDIR = JENKINSHOMEDIR + "/workspace/";
   private final static String PNG = ".png";
   private final String progeduAPIUrl;
-  private final String jenkinsUserName;
+  private final String jenkinsUsername;
   private final String jenkinsAssignmentName;
 
   @DataBoundConstructor
-  public UpdateToDbPublisher(String progeduAPIUrl, String jenkinsUserName, String jenkinsAssignmentName) {
+  public UpdateToDbPublisher(String progeduAPIUrl, String jenkinsUsername,
+      String jenkinsAssignmentName) {
     this.progeduAPIUrl = progeduAPIUrl;
-    this.jenkinsUserName = jenkinsUserName;
+    this.jenkinsUsername = jenkinsUsername;
     this.jenkinsAssignmentName = jenkinsAssignmentName;
   }
 
@@ -47,8 +48,8 @@ public class UpdateToDbPublisher extends Recorder {
     return progeduAPIUrl;
   }
 
-  public String getJenkinsUserName() {
-    return jenkinsUserName;
+  public String getJenkinsUsername() {
+    return jenkinsUsername;
   }
 
   public String getJenkinsAssignmentName() {
@@ -57,7 +58,7 @@ public class UpdateToDbPublisher extends Recorder {
 
   // --step 1--
   private ArrayList searchPngFile(BuildListener listener) {
-    String pngFilePath = WORKSPACEDIR + jenkinsUserName + "_" + jenkinsAssignmentName + PNGPATH;
+    String pngFilePath = WORKSPACEDIR + jenkinsUsername + "_" + jenkinsAssignmentName + PNGPATH;
     ArrayList pngFile = new ArrayList<>();
     File pngfileDir = new File(pngFilePath);
     FilenameFilter filter = new FilenameFilter() {
@@ -79,13 +80,13 @@ public class UpdateToDbPublisher extends Recorder {
     return pngFile;
   }
   // --step 1/--
-  
+
   // --step 2--
   private void saveURLtoDB(List<String> pngFiles, BuildListener listener) {
     String checkurl = progeduAPIUrl + "/commits/screenshot/updateURL";
     try {
-      URIBuilder uriBuilder = new URIBuilder(checkurl).addParameter("userName", jenkinsUserName);
-      uriBuilder = new URIBuilder(checkurl).addParameter("assignmentName", jenkinsAssignmentName);
+      URIBuilder uriBuilder = new URIBuilder(checkurl).addParameter("username", jenkinsUsername);
+      uriBuilder.addParameter("assignmentName", jenkinsAssignmentName);
       for (String data : pngFiles) {
         uriBuilder.addParameter("url", data);
       }
@@ -124,7 +125,7 @@ public class UpdateToDbPublisher extends Recorder {
   @Override
   public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
     listener.getLogger()
-    .println("-----------------------UpdateScreenshotPNGToDB-----------------------------");
+        .println("-----------------------UpdateScreenshotPNGToDB-----------------------------");
     // step 1: Search all PNG file under src/target/screenshot/
     List<String> pngFiles = new ArrayList<>();
     pngFiles = searchPngFile(listener);
@@ -132,7 +133,7 @@ public class UpdateToDbPublisher extends Recorder {
     // step 2: save to DB
     saveURLtoDB(pngFiles, listener);
     listener.getLogger()
-    .println("-----------------------UpdateScreenshotPNGToDB-----------------------------");
+        .println("-----------------------UpdateScreenshotPNGToDB-----------------------------");
     return true;
   }
 
