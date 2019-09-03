@@ -94,8 +94,8 @@ public class UpdateToDbPublisher extends Recorder {
       String url = URLDecoder.decode(uri.toURL().toString(), "UTF-8");
       URL finalUrl = new URL(url);
       HttpURLConnection conn = (HttpURLConnection) finalUrl.openConnection();
-      conn.setReadTimeout(10000);
-      conn.setConnectTimeout(15000);
+      conn.setReadTimeout(60000);
+      conn.setConnectTimeout(60000);
       conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
       conn.setRequestProperty("charset", "utf-8");
       conn.setRequestMethod("POST");
