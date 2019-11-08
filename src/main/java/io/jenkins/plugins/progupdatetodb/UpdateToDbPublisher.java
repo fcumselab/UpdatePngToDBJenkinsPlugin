@@ -28,20 +28,22 @@ import hudson.tasks.Publisher;
 import hudson.tasks.Recorder;
 
 public class UpdateToDbPublisher extends Recorder {
-  private final static String PNGPATH = "/target/screenshot/";
+  // private final static String PNGPATH = "/target/screenshot/";
   private final static String JENKINSHOMEDIR = "/var/jenkins_home";
   private final static String WORKSPACEDIR = JENKINSHOMEDIR + "/workspace/";
   private final static String PNG = ".png";
   private final String progeduAPIUrl;
   private final String jenkinsUsername;
   private final String jenkinsAssignmentName;
+  private final String pngPath;
 
   @DataBoundConstructor
   public UpdateToDbPublisher(String progeduAPIUrl, String jenkinsUsername,
-      String jenkinsAssignmentName) {
+      String jenkinsAssignmentName, String pngPath) {
     this.progeduAPIUrl = progeduAPIUrl;
     this.jenkinsUsername = jenkinsUsername;
     this.jenkinsAssignmentName = jenkinsAssignmentName;
+	this.pngPath = pngPath;
   }
 
   public String getProgeduAPIUrl() {
@@ -55,10 +57,15 @@ public class UpdateToDbPublisher extends Recorder {
   public String getJenkinsAssignmentName() {
     return jenkinsAssignmentName;
   }
+  
+  public String getPngPath() {
+    return pngPath;
+  }
 
   // --step 1--
   private ArrayList searchPngFile(BuildListener listener) {
-    String pngFilePath = WORKSPACEDIR + jenkinsUsername + "_" + jenkinsAssignmentName + PNGPATH;
+    String pngFilePath = WORKSPACEDIR + jenkinsUsername + "_" + jenkinsAssignmentName + pngPath;
+	listener.getLogger().println("PngFilePath: " + pngFilePath);
     ArrayList pngFile = new ArrayList<>();
     File pngfileDir = new File(pngFilePath);
     FilenameFilter filter = new FilenameFilter() {
