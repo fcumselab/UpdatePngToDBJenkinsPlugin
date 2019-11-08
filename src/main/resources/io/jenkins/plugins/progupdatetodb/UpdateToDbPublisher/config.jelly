@@ -9,4 +9,7 @@
     <f:entry title="${%jenkinsUsername}" field="jenkinsUsername">
         <f:textbox />
     </f:entry>
+	<f:entry title="${%pngPath}" field="pngPath">
+        <f:textbox />
+    </f:entry>
 </j:jelly>
